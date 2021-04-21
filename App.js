@@ -23,16 +23,16 @@ export default class App extends React.Component {
     this.setState(prevState => ({contacts: prevState.contacts.sort(compareNames)}))
   }
 
-  showForm = () => {
-    this.setState({showForm: true})
+  showForm = (value) => {
+    this.setState({showForm: value})
   }
 
   render() {
-    if (this.state.showForm) return <AddContactForm />
+    if (this.state.showForm) return <AddContactForm showForm={this.showForm}/>
     return (
       <View style={styles.container}>
         <Button title="toggle contacts" onPress={this.toggleContacts} />
-        <Button title="add contact" onPress={this.showForm} />
+        <Button title="add contact" onPress={() => this.showForm(true)} />
         {this.state.showContacts && <SectionListContacts contacts={this.state.contacts} />}
       </View>
     );

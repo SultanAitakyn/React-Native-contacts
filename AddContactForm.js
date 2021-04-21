@@ -1,7 +1,6 @@
 import React from 'react'
 import {Button, StyleSheet, TextInput, View} from 'react-native'
-import {createContact} from './contacts'
-
+import contacts from './contacts'
 
 const styles = StyleSheet.create({
   container: {
@@ -33,16 +32,22 @@ export default class AddContactForm extends React.Component {
   }
 
   handlePhoneChange = phone => {
-    phone = phone.replace(".", '');
-    if(isNaN(phone)){
-      // Its not a number
-    }else{
-      this.setState({phone})
+    phone = phone.replace(/[.\s]/g, '');
+    if(!isNaN(phone)){
+      this.setState({phone});
+      if (phone) {
+        this.setState({isFormValid: true});
+      } else {
+        this.setState({isFormValid: false});
+      }
     }
   }
 
-  onSaveContact = (values) => {
-    createContact(values);
+  onSaveContact = () => {
+    if (this.state.isFormValid) {
+      contacts.push({name: this.state.name, phone: this.state.phone});
+      this.props.showForm(false);
+    }
   }
 
   render() {
